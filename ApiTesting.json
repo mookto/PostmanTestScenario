@@ -1,0 +1,222 @@
+{
+	"info": {
+		"_postman_id": "93feac35-1097-45aa-b106-5b807fa7f864",
+		"name": "ApiTesting",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Weather api",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d53afb7a-9486-43ff-92b5-0e80885dda82",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"X-Cache-Keyis present\", function () {\r",
+							"    pm.response.to.have.header(\"X-Cache-Key\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 300ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(300);\r",
+							"});\r",
+							"pm.test(\"Verify id \", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.id).to.eql(2643743);\r",
+							"});\r",
+							"pm.test(\"Verify wind speed\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.wind.speed).to.eql(4.1);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "13d38da1-ab84-411d-84d4-87f6acc2d784",
+						"exec": [
+							"console.log(\"Just began the test \")"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "api.openweathermap.org/data/2.5/weather?q=London&appid=acfd60b33d812dd730b16d1a6e7fe7eb",
+					"host": [
+						"api",
+						"openweathermap",
+						"org"
+					],
+					"path": [
+						"data",
+						"2.5",
+						"weather"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "London"
+						},
+						{
+							"key": "appid",
+							"value": "acfd60b33d812dd730b16d1a6e7fe7eb"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetToken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d68a6514-9358-4b6e-9393-778c7c458a55",
+						"exec": [
+							"\r",
+							"pm.test(\"Get token \", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    var tok=jsonData.args.token;\r",
+							"    console.log(\"Token is \"+tok)\r",
+							"    pm.globals.set(\"mytoken\",tok)\r",
+							"});\r",
+							"postman.setNextRequest(\"Status\");\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://postman-echo.com/post?token={{$guid}}",
+					"protocol": "https",
+					"host": [
+						"postman-echo",
+						"com"
+					],
+					"path": [
+						"post"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "{{$guid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Status",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "3a65ec8a-ff16-4060-87a2-9e9580dd4428",
+						"exec": [
+							"console.log(\" the variable key is \"+pm.globals.get(\"mytoken\"));"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "d39f8516-5460-4d5a-a5c2-c77b2b684b5c",
+						"exec": [
+							"pm.test(\"status check \", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.args.status).to.eql(\"hello postman tutorials\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://postman-echo.com/post?token={{mytoken}}&status=hello postman tutorials",
+					"protocol": "https",
+					"host": [
+						"postman-echo",
+						"com"
+					],
+					"path": [
+						"post"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "{{mytoken}}"
+						},
+						{
+							"key": "status",
+							"value": "hello postman tutorials"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateTokenURl",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c27efe93-2130-4eba-adb1-749b8518b48d",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\" : \"admin\",\n    \"password\" : \"password123\"\n}"
+				},
+				"url": {
+					"raw": "https://restful-booker.herokuapp.com/auth",
+					"protocol": "https",
+					"host": [
+						"restful-booker",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"auth"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
