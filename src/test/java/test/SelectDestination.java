@@ -26,7 +26,7 @@ public class SelectDestination {
 			String cityname=webcity1.getText();
 			System.out.println(cityname);
 			System.out.println(cityname);
-			
+			System.out.println(cityname);
 			
 			 
 		//driver.findElement(By.xpath("//a[contains(text(),'Jammu (IXJ)')]")).click();
