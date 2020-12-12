@@ -25,6 +25,7 @@ public class SelectDestination {
 		for (WebElement webcity1 : city1) {
 			String cityname=webcity1.getText();
 			System.out.println(cityname);
+			System.out.println(cityname);
 			
 			
 			 
